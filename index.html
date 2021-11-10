@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>W2 自行車施工中</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="./leaflet.css" crossorigin=""/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css"></link> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css"></link> 
+    <link rel="stylesheet" href="w2map.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+
+    
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-ant-path" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+	
+</head>
+<body>
+
+    <div id="map"></div>
+
+
+<script>
+    var usrLocation = [];
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+        usrLocation = [crd.latitude, crd.longitude];
+        console.log(usrLocation);
+        renderMap(usrLocation);
+    };
+
+    function error(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
+
+    function getAuthorizationHeader() {
+        let AppID = '69121a1d8f714a5faa4f54c512bb459e';
+        let AppKey = 'nYALaDjx1Au-PYCnZOnL-InFIZI';
+
+        let GMTString = new Date().toGMTString();
+        let ShaObj = new jsSHA('SHA-1', 'TEXT');
+        ShaObj.setHMACKey(AppKey, 'TEXT');
+        ShaObj.update('x-date: ' + GMTString);
+        let HMAC = ShaObj.getHMAC('B64');
+        let Authorization = 'hmac username=\"' + AppID + '\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"' + HMAC + '\"';
+        return { 'Authorization': Authorization, 'X-Date': GMTString }; 
+    }
+
+    function readTextFile(file, callback) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.overrideMimeType("application/json");
+            rawFile.open("GET", file, true);
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4 && rawFile.status == "200") {
+                    callback(rawFile.responseText);
+                }
+            }
+            rawFile.send(null);
+        }
+
+    var map = L.map('map', {
+        center: [25.045,121.516],
+        zoom: 12
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">我們就是要組隊</a> contributors',
+        minZoom: 1,
+        maxZoom: 19
+    }).addTo(map);
+    L.control.locate({
+        flyTo: true,
+        initialZoomLevel: 17,
+        strings: {
+            popup: "您的位置"
+        }
+
+    }).addTo(map);
+
+    const markers = new L.MarkerClusterGroup().addTo(map);
+
+    function renderMap(usrLocation) {
+
+        var blueIcon = new L.Icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+        var redIcon = new L.Icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        var markers = new L.MarkerClusterGroup().addTo(map);
+
+        readTextFile("./Taipei.json", function(text){
+            var data = JSON.parse(text);
+            for(let i = 0; data.length > i; i++){
+                var mask = blueIcon;
+                
+                markers.addLayer(L.marker([data[i].StationPosition.PositionLat, data[i].StationPosition.PositionLon], {icon: mask})
+                                .bindPopup('<h1>' + data[i].StationUID + '  ' + data[i].StationName.Zh_tw + '</h1>' + '<p>' + data[i].AvailableRentBikes + '/' + data[i].BikesCapacity + '</p>'));
+            }
+        });
+
+        // data.items.forEach(function (item) { //1
+        //     Object.keys(item).forEach(function(key) { //2
+        //         if (!result[item.id]) result[item.id] = {}; //3
+        //         result[item.id][key] = item[key]; //4
+        //     });
+        // })
+
+
+        
+
+
+        // `https://ptx.transportdata.tw/MOTC/v2/Bike/Station/NearBy?$top=30&$spatialFilter=nearby(${usrLocation[0]},${usrLocation[1]},550)&$format=JSON`
+        axios.get('https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/NearBy?$top=30&$spatialFilter=nearby(25.03,121.50,550)&$format=JSON', {headers: getAuthorizationHeader()})
+            .then(function (response) {
+                let data = response.data;
+
+                for(let i = 0; data.length > i; i++){
+                    var mask;
+                    if(data[i].ServiceStatus  == 0 || data[i].ServiceStatus  == 2){
+                        mask = redIcon;
+                    } else{
+                        mask = blueIcon;
+                    }
+
+                    // console.log(data[i].StationPosition.PositionLat, data[i].StationPosition.PositionLon)
+                    uid = data[i].StationUID;
+                    // console.log(uid);
+                    
+                    // markers.addLayer(L.marker([data[i].StationPosition.PositionLat, data[i].StationPosition.PositionLon], {icon: mask})
+                    //                 .bindPopup('<h1>' + data[i].StationName.Zh_tw + '</h1>' + '<p>' + data[i].AvailableRentBikes + '/' + data[i].BikesCapacity + '</p>'));
+                }
+                map.addLayer(markers);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .finally(function () {
+                console.log('finally');
+            });
+    }
+
+
+    
+        
+</script>
+
+
+
+</body>
+</html>
