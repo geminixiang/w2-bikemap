@@ -157,7 +157,7 @@
 	margin-bottom: 10px;
 	}
 .leaflet-left .leaflet-control {
-	margin-left: 10px;
+	margin-left: 15px;
 	}
 .leaflet-right .leaflet-control {
 	margin-right: 10px;
@@ -296,7 +296,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	display: block;
 	}
 .leaflet-bar a:hover {
-	background-color: #f4f4f4;
+	background-color: #d3d3d3;
 	}
 .leaflet-bar a:first-child {
 	border-top-left-radius: 4px;
@@ -314,7 +314,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 
 .leaflet-touch .leaflet-bar a {
-	width: 50px;
+	width: 40px;
 	height: 50px;
 	line-height: 50px;
 	font-size: 35px;
