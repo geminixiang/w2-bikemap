@@ -200,13 +200,8 @@
                 shadowSize: [41, 41]
             });
 
+
             var markers = new L.MarkerClusterGroup().addTo(map);
-
-
-
-
-            
-
 
             // `https://ptx.transportdata.tw/MOTC/v2/Bike/Station/NearBy?$top=30&$spatialFilter=nearby(${usrLocation[0]},${usrLocation[1]},550)&$format=JSON`
             // var hh = 'https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/NearBy?$top=30&$spatialFilter=nearby(,550)&$format=JSON';
@@ -230,13 +225,21 @@
                     // console.log(uid);
                     // console.log(data[i]);
                     
+                    
                     markers.addLayer(L.marker([data[i].lat, data[i].lng], {icon: mask})
-                                    .bindPopup('<h1>' + data[i].name_tw + '</h1>'
+                                      .bindPopup('<h1>' + data[i].name_tw + '</h1>'
                                                 + '<p>' + data[i].available_spaces
                                                 + '/' + data[i].parking_spaces + '</p>'
-                                                + '<p>更新於' + data[i].updated_at + '</p>'
-                                               
-                                               ));
+                                                + '<p>更新於' + data[i].updated_at + '</p>'                                    
+                                               )
+                                       .bindTooltip(data[i].name_tw,
+                                          {
+                                            permanent: true, 
+                                            direction: 'center',
+                                            className: 'mytooltip'
+                                          }
+                                       )
+                                    );
                 }
                 map.addLayer(markers);
             })
