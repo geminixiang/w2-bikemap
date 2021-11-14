@@ -1,26 +1,47 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300&display=swap");
+
+* {
+  font-family: "Noto Sans TC", sans-serif;
+}
 
 body {
   margin: 0;
-  font-family: "Open Sans", sans-serif;
 }
+/* 用這辦法處理手機網址列 */
+/* https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
 #map {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 84px);
+  height: calc((var(--vh, 1vh) * 100) - 84px);
 }
 .mytooltip {
-  background-color: rgba(255, 255, 255, 0);
+  background-color: #fff;
   border: 0;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+  border-radius: 100px;
+  box-shadow: 4px 2px 10px rgba(0, 0, 0, 0.25) !important;
+  padding: 4px 8px;
+  margin-top: 15px;
+  opacity: 1 !important;
+}
+
+.leaflet-pane.leaflet-marker-pane > img {
+  /* width: 62px !important;
+  height: 75px !important; */
+  margin-left: -27px !important;
+  margin-top: -62px !important;
+}
+
+.logo {
+  position: absolute;
+  left: 7vw;
 }
 
 .nav {
   display: flex;
   align-items: center;
   justify-content: center; /*水平置中*/
-  height: 100px;
+  height: 84px;
   width: 100vw;
   background-color: rgba(255, 199, 0, 1);
-  border-bottom-left-radius: 50px;
 }
 
 .search {
@@ -32,12 +53,12 @@ body {
 #searchTerm {
   border: 0px;
   border-right: none;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 1);
   padding: 5px 24px;
   height: 48px;
-  width: 50vw !important;
+  width: 35vw !important;
   max-width: 480px !important;
-  border-radius: 10px !important;
+  border-radius: 10px 0px 0px 10px !important;
   outline: none;
   color: rgba(0, 0, 0, 0.2);
   font-size: 16px;
@@ -51,8 +72,7 @@ body {
 }
 
 .searchButton {
-  position: absolute;
-  right: -10px;
+  float: right;
   width: 74px;
   height: 48px;
   border: 0px;
@@ -65,6 +85,7 @@ body {
   font-size: 20px;
 }
 
+/* 自行車路線按鈕 */
 .bikerRoute {
   border-radius: 5px;
   padding: 13px 10px;
@@ -85,12 +106,36 @@ body {
   color: white !important;
   vertical-align: middle;
   font-size: 15px;
-  margin-right: 5px;
+}
+.bikerRoute > p {
+  font-size: 12px;
+  margin-left: 5px;
+  vertical-align: middle;
+  display: inline;
 }
 
 .bikerRecommed {
   position: absolute;
   right: 5vw;
+}
+
+/* 改變定位圖案 */
+.leaflet-bar-part {
+  background-image: url("./location.svg");
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+.fa-map-marker {
+  display: none;
+}
+
+/* easy autocomplete 顯示問題 */
+.easy-autocomplete-container {
+  z-index: 999;
+}
+.easy-autocomplete {
+  max-width: 480px !important;
+  width: 35vw !important;
 }
 
 /* Marker Cluster */
@@ -322,7 +367,24 @@ body {
   .leaflet-touch .leaflet-sidebar > .leaflet-control {
     border: 0;
   }
+
+  .wrap {
+    position: absolute;
+    top: 92px;
+    z-index: 999;
+  }
+  .searchButton {
+    width: 48px;
+  }
+  #searchTerm,
+  .easy-autocomplete {
+    width: 70vw !important;
+  }
+  .logo {
+    width: 130px;
+  }
 }
+
 @media (min-width: 768px) and (max-width: 991px) {
   .leaflet-sidebar {
     width: 305px;
@@ -332,6 +394,9 @@ body {
   }
   .leaflet-sidebar.right.visible ~ .leaflet-right {
     right: 305px;
+  }
+  .bikerRoute > p {
+    display: none;
   }
 }
 @media (min-width: 992px) and (max-width: 1199px) {
