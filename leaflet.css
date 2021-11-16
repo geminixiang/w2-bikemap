@@ -649,3 +649,24 @@ svg.leaflet-image-layer.leaflet-interactive path {
   margin-left: -12px;
   border-right-color: #fff;
 }
+
+/* popup */
+#card {
+  color: black;
+  padding: 4px 10px;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  padding: 0;
+}
+.leaflet-popup-content {
+  margin: 0;
+}
+.noBikePopUp {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+  border-radius: 100px !important;
+  text-align: center;
+  margin: 0px;
+  padding: 5px 10px;
+}

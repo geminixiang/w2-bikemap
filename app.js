@@ -222,21 +222,20 @@ function setMarker() {
     var StationName = item.StationName.Zh_tw.replace("YouBike", "")
       .replace("2.0_", "")
       .replace("1.0_", "");
-    // console.log(item);
-    mask = grayIcon;
-    item.AvailableRentBikes > 0 && (mask = greenIcon);
 
-    markers.addLayer(
-      L.marker(
-        [item.StationPosition.PositionLat, item.StationPosition.PositionLon],
-        {
-          icon: mask,
-          title: StationName,
-          alt: "dlksafj;lksadjflk;"
-        }
-      )
-        .bindPopup(
-          `<div id="card">
+    if (item.AvailableRentBikes > 0) {
+      mask = greenIcon;
+      markers.addLayer(
+        L.marker(
+          [item.StationPosition.PositionLat, item.StationPosition.PositionLon],
+          {
+            icon: mask,
+            title: StationName,
+            alt: "dlksafj;lksadjflk;"
+          }
+        )
+          .bindPopup(
+            `<div id="card">
                 <div class="card-body">
                 <h1 class="card-title" id="StationName">${StationName}</h1>
                 <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.StationAddress.Zh_tw}</h6>
@@ -244,14 +243,50 @@ function setMarker() {
                 <p class="card-text mt-0">可歸還車數：<span id="AvailableReturnBikes">${item.AvailableReturnBikes}</span></p>
                 <p class="card-text mt-0">更新時間：<span id="UpdateTime">${item.UpdateTime}</span></p>
                 </div>
-            </div>`
+            </div>`,
+            {
+              closeButton: false
+            }
+          )
+          .bindTooltip(StationName, {
+            permanent: true,
+            direction: "center",
+            className: "mytooltip"
+          })
+      );
+    } else {
+      mask = grayIcon;
+      markers.addLayer(
+        L.marker(
+          [item.StationPosition.PositionLat, item.StationPosition.PositionLon],
+          {
+            icon: mask,
+            title: StationName,
+            alt: "dlksafj;lksadjflk;"
+          }
         )
-        .bindTooltip(StationName, {
-          permanent: true,
-          direction: "center",
-          className: "mytooltip"
-        })
-    );
+          .bindPopup(
+            `<div id="card" class="noBikePopUp">
+              抱歉！本站已無車輛租借
+                <div class="card-body" style="display:none;">
+                  <h1 class="card-title" id="StationName">${StationName}</h1>
+                  <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.StationAddress.Zh_tw}</h6>
+                  <p class="card-text mb-0">可租借車數：<span id="AvailableRentBikes">${item.AvailableRentBikes}</span></p>
+                  <p class="card-text mt-0">可歸還車數：<span id="AvailableReturnBikes">${item.AvailableReturnBikes}</span></p>
+                  <p class="card-text mt-0">更新時間：<span id="UpdateTime">${item.UpdateTime}</span></p>
+                </div>
+            </div>`,
+            {
+              closeButton: false
+            }
+          )
+          .bindTooltip(StationName, {
+            permanent: true,
+            direction: "center",
+            className: "mytooltip"
+          })
+      );
+    }
   });
   map.addLayer(markers);
 }
@@ -557,3 +592,54 @@ function displaySlides(n) {
   }
   slides[slide_index - 1].style.display = "block";
 }
+
+// 手勢判定
+var gesture = {
+    x: [],
+    y: [],
+    match: ""
+  },
+  tolerance = 200; //手勢滑動寬容值;
+window.addEventListener("touchstart", function (e) {
+  e.preventDefault();
+  for (i = 0; i < e.touches.length; i++) {
+    var dot = document.createElement("div");
+    dot.id = i;
+    dot.style.top = e.touches[i].clientY - 25 + "px";
+    dot.style.left = e.touches[i].clientX - 25 + "px";
+    document.body.appendChild(dot);
+    gesture.x.push(e.touches[i].clientX);
+    gesture.y.push(e.touches[i].clientY);
+  }
+});
+window.addEventListener("touchmove", function (e) {
+  e.preventDefault();
+  for (var i = 0; i < e.touches.length; i++) {
+    var dot = document.getElementById(i);
+    dot.style.top = e.touches[i].clientY - 25 + "px";
+    dot.style.left = e.touches[i].clientX - 25 + "px";
+    gesture.x.push(e.touches[i].clientX);
+    gesture.y.push(e.touches[i].clientY);
+  }
+});
+window.addEventListener("touchend", function (e) {
+  var xTravel = gesture.x[gesture.x.length - 1] - gesture.x[0],
+    yTravel = gesture.y[gesture.y.length - 1] - gesture.y[0];
+  if (xTravel < tolerance && xTravel > -tolerance && yTravel < -tolerance) {
+    gesture.match = "Swiped Up";
+  }
+  if (xTravel < tolerance && xTravel > -tolerance && yTravel > tolerance) {
+    gesture.match = "Swiped Down";
+    sidebar.hide(); //下滑就隱藏sidebar
+  }
+  if (yTravel < tolerance && yTravel > -tolerance && xTravel < -tolerance) {
+    gesture.match = "Swiped Left";
+  }
+  if (yTravel < tolerance && yTravel > -tolerance && xTravel > tolerance) {
+    gesture.match = "Swiped Right";
+  }
+
+  gesture.x = [];
+  gesture.y = [];
+  gesture.match = xTravel = yTravel = "";
+});
