@@ -196,13 +196,26 @@ if (navigator.geolocation) {
 }
 
 // 標記 icon
-var markers = new L.MarkerClusterGroup().addTo(map).on("click", function () {
-  sidebar.toggle();
-  let p = document.getElementById("card");
-  let p_prime = p.cloneNode(true);
-  // 11/16
-  // document.getElementById('sidebar').
+var markers = new L.MarkerClusterGroup().addTo(map).on("click", function (e) {
+  sidebar.show();
+
+  console.log(e);
+  // 這邊暴力解，直接card值綁到sidebar上，
+  // 但是會出現連續點擊marker，值會出現之前marker上card的值，沒有同步
+  // 所以延遲執行function，確保card內的值已經改變
+  setTimeout(renderSidebar, 300);
 });
+
+function renderSidebar() {
+  document.getElementById("s-title").innerHTML =
+    document.getElementById("StationName").innerHTML;
+  document.getElementById("s-address").innerHTML =
+    document.getElementById("StationAddress").innerHTML;
+  document.getElementById("s-AvailableRentBikes").innerHTML =
+    document.getElementById("AvailableRentBikes").innerHTML;
+  document.getElementById("s-AvailableReturnBikes").innerHTML =
+    document.getElementById("AvailableReturnBikes").innerHTML;
+}
 
 function setMarker() {
   filterData.forEach((item) => {
@@ -218,17 +231,18 @@ function setMarker() {
         [item.StationPosition.PositionLat, item.StationPosition.PositionLon],
         {
           icon: mask,
-          title: StationName
+          title: StationName,
+          alt: "dlksafj;lksadjflk;"
         }
       )
         .bindPopup(
           `<div id="card">
                 <div class="card-body">
-                <h1 class="card-title">${StationName}</h1>
-                <h6 class="card-subtitle mb-2 text-muted">${item.StationAddress.Zh_tw}</h6>
-                <p class="card-text mb-0">可租借車數：${item.AvailableRentBikes}</p>
-                <p class="card-text mt-0">可歸還車數：${item.AvailableReturnBikes}</p>
-                <p class="card-text mt-0">更新時間：${item.UpdateTime}</p>
+                <h1 class="card-title" id="StationName">${StationName}</h1>
+                <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.StationAddress.Zh_tw}</h6>
+                <p class="card-text mb-0">可租借車數：<span id="AvailableRentBikes">${item.AvailableRentBikes}</span></p>
+                <p class="card-text mt-0">可歸還車數：<span id="AvailableReturnBikes">${item.AvailableReturnBikes}</span></p>
+                <p class="card-text mt-0">更新時間：<span id="UpdateTime">${item.UpdateTime}</span></p>
                 </div>
             </div>`
         )
@@ -242,6 +256,10 @@ function setMarker() {
   map.addLayer(markers);
 }
 
+function nearByFood() {
+  return "hi";
+}
+
 // 串接附近的景點資料
 let tourism = [];
 function getTourismData(longitude, latitude) {
@@ -253,26 +271,28 @@ function getTourismData(longitude, latitude) {
   })
     .then((response) => {
       console.log("景點資料", response);
-      data = response.data;
-      console.log(data);
+      tourism = response.data;
+      console.log(tourism);
       // getAvailableData(longitude, latitude);
     })
     .catch((error) => console.log("error", error));
 }
 
-// 串接附近的美食資料
+// 串接美食資料
 let food = [];
 function getFoodData(longitude, latitude) {
   axios({
     method: "get",
-    url: "https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot/Taipei?$top=30&$format=JSON",
+    // 美食API 台北資料錯誤，另改來源 https://gis.taiwan.net.tw/XMLReleaseALL_public/restaurant_C_f.json
+    // url: "https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant/Taipei?$format=JSON",
     // url: `https://ptx.transportdata.tw/MOTC/v2/Bike/Station/NearBy?$spatialFilter=nearby(${latitude},${longitude},1000)`,
-    headers: GetAuthorizationHeader()
+    url: "restaurant.json"
+    // headers: GetAuthorizationHeader()
   })
     .then((response) => {
-      console.log("景點資料", response);
-      data = response.data;
-      console.log(data);
+      console.log("美食資料", response);
+      food = response.data.XML_Head.Infos.Info;
+      console.log(food);
       // getAvailableData(longitude, latitude);
     })
     .catch((error) => console.log("error", error));

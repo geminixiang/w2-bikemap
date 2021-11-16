@@ -91,12 +91,12 @@
             </div>
             <div class="red-info">
                 <p>已被租借車輛
-                    <span style="font-size:28px; color: rgba(255, 203, 51, 1);">12</span>
+                    <span style="font-size:28px; color: rgba(255, 203, 51, 1);" id="s-AvailableReturnBikes">12</span>
                 </p>
             </div>
             <div class="blue-info">
                 <p>現場尚有車輛
-                    <span style="font-size:28px; color: rgba(255, 203, 51, 1);">18</span>
+                    <span style="font-size:28px; color: rgba(255, 203, 51, 1);" id="s-AvailableRentBikes">18</span>
                 </p>
             </div>
         </div>
@@ -110,9 +110,9 @@
                 <img src="icons/Collection.svg" class="collection-icon"></img>
 
                 <div class="sidebar-header">
-                    <h1>北平公園站</h1>
+                    <h1 id="s-title">北平公園站</h1>
                     <img src="icons/Place.svg"></img>
-                    <p>台北市中正區北平東路(北平公園路口)</p>
+                    <p id="s-address">台北市中正區北平東路(北平公園路口)</p>
                 </div>
 
             </div>
@@ -148,7 +148,7 @@
 
                 <!-- TAB2 打包區塊 start -->
                 <input id="tab2" type="radio" name="tab" />
-                <label for="tab2">景點</label>
+                <label for="tab2" onclick="nearByFood()">景點</label>
                 <div class="tab_content">
                     <div class="sidebar-food">
                         <div class="food-detail">
