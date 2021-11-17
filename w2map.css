@@ -318,7 +318,7 @@ body {
 }
 
 .sidebar-food {
-  height: 130%;
+  height: 160%;
   padding: 15px 20px 50px 20px;
   overflow: scroll;
 }
@@ -338,6 +338,14 @@ body {
 .food-detail > h1,
 .food-detail > p {
   margin: 0px;
+  /* 行數限制 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
 }
 .food-detail > span {
   color: rgba(255, 203, 51, 1);

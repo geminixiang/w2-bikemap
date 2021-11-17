@@ -215,6 +215,8 @@ function renderSidebar() {
     document.getElementById("AvailableRentBikes").innerHTML;
   document.getElementById("s-AvailableReturnBikes").innerHTML =
     document.getElementById("AvailableReturnBikes").innerHTML;
+  getFoodData();
+  getTourismData();
 }
 
 function setMarker() {
@@ -261,8 +263,7 @@ function setMarker() {
           [item.StationPosition.PositionLat, item.StationPosition.PositionLon],
           {
             icon: mask,
-            title: StationName,
-            alt: "dlksafj;lksadjflk;"
+            title: StationName
           }
         )
           .bindPopup(
@@ -291,10 +292,6 @@ function setMarker() {
   map.addLayer(markers);
 }
 
-function nearByFood() {
-  return "hi";
-}
-
 // 串接附近的景點資料
 let tourism = [];
 function getTourismData(longitude, latitude) {
@@ -307,14 +304,44 @@ function getTourismData(longitude, latitude) {
     .then((response) => {
       console.log("景點資料", response);
       tourism = response.data;
-      console.log(tourism);
+
+      let random1 = Math.floor(Math.random() * tourism.length);
+      let random2 = Math.floor(Math.random() * tourism.length);
+      let random3 = Math.floor(Math.random() * tourism.length);
+
+      console.log;
+
+      document.getElementById("tourism").innerHTML = `
+      <!--Pixabay 上的免費圖片-->
+      <div class="food-detail">
+          <img src="./images/tour1.jpg" alt="" class="food-img">
+          <h1>${tourism[random1].Name}</h1>
+          <p style="display: inline;">4.0</p><span>★★★★☆</span>
+          <p style="display: inline;">120則評論</p>
+          <p>${tourism[random1].DescriptionDetail}...查看更多</p>
+      </div>
+      <div class="food-detail">
+          <img src="./images/tour2.jpg" alt="" class="food-img">
+          <h1>${tourism[random2].Name}</h1>
+          <p style="display: inline;">4.0</p><span>★★★★☆</span>
+          <p style="display: inline;">120則評論</p>
+          <p>${tourism[random2].DescriptionDetail}...查看更多</p>
+      </div>
+      <div class="food-detail">
+          <img src="./images/tour3.jpg" alt="" class="food-img">
+          <h1>${tourism[random3].Name}</h1>
+          <p style="display: inline;">4.0</p><span>★★★★☆</span>
+          <p style="display: inline;">120則評論</p>
+          <p>${tourism[random3].DescriptionDetail}...查看更多</p>
+      </div>`;
+      // console.log(tourism);
       // getAvailableData(longitude, latitude);
     })
     .catch((error) => console.log("error", error));
 }
 
 // 串接美食資料
-let food = [];
+let foods = [];
 function getFoodData(longitude, latitude) {
   axios({
     method: "get",
@@ -325,9 +352,35 @@ function getFoodData(longitude, latitude) {
     // headers: GetAuthorizationHeader()
   })
     .then((response) => {
-      console.log("美食資料", response);
-      food = response.data.XML_Head.Infos.Info;
-      console.log(food);
+      console.log("美食資料", response.data.XML_Head.Infos.Info);
+      foods = response.data.XML_Head.Infos.Info;
+      let random1 = Math.floor(Math.random() * foods.length);
+      let random2 = Math.floor(Math.random() * foods.length);
+      let random3 = Math.floor(Math.random() * foods.length);
+
+      document.getElementById("restaurant").innerHTML = `
+      <!--Pixabay 上的免費圖片-->
+      <div class="food-detail">
+          <img src="./images/food1.jpg" alt="" class="food-img">
+          <h1>${foods[random1].Name}</h1>
+          <p style="display: inline;">4.0</p><span>★★★★☆</span>
+          <p style="display: inline;">120則評論</p>
+          <p>${foods[random1].Description}...查看更多</p>
+      </div>
+      <div class="food-detail">
+          <img src="./images/food2.jpg" alt="" class="food-img">
+          <h1>${foods[random2].Name}</h1>
+          <p style="display: inline;">4.0</p><span>★★★★☆</span>
+          <p style="display: inline;">120則評論</p>
+          <p>${foods[random2].Description}...查看更多</p>
+      </div>
+      <div class="food-detail">
+          <img src="./images/food3.jpg" alt="" class="food-img">
+          <h1>${foods[random3].Name}</h1>
+          <p style="display: inline;">4.0</p><span>★★★★☆</span>
+          <p style="display: inline;">120則評論</p>
+          <p>${foods[random3].Description}...查看更多</p>
+      </div>`;
       // getAvailableData(longitude, latitude);
     })
     .catch((error) => console.log("error", error));
@@ -486,14 +539,6 @@ sidebar.on("show", function () {
 
 sidebar.on("shown", function () {
   console.log("Sidebar is visible.");
-  // var htmlObject = sidebar.getContainer();
-  // console.log(htmlObject);
-  // var a = document.getElementsByClassName('sidebar-food');
-  // console.log(a);
-  // function setParent(el, newParent) {
-  //     newParent.appendChild(el);
-  // }
-  // setParent(htmlObject, a);
 });
 
 sidebar.on("hide", function () {
@@ -507,16 +552,6 @@ sidebar.on("hidden", function () {
 L.DomEvent.on(sidebar.getCloseButton(), "click", function () {
   console.log("Close button clicked.");
 });
-
-// function onEachFeature(feature, layer) {
-//     console.log('hi');
-//     console.log(feature, layer);
-//     layer.on('click', function (e) {
-//         $(".nome").html(feature.properties.nome);
-//         $(".imagem").html(feature.properties.imagem);
-//         $(".descricao").html(feature.properties.descricao);
-//     });
-// }
 
 // function renderMap(usrLocation) {
 
