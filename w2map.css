@@ -259,6 +259,18 @@ body {
 .leaflet-sidebar.bottom.visible {
   bottom: -300px;
 }
+.loading {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+/* full sidebar for mobile */
+.full-sidebar-mobile {
+  bottom: -100px !important;
+}
+
 /*  */
 .leaflet-sidebar > .leaflet-control {
   height: 100%;
@@ -274,6 +286,7 @@ body {
   -webkit-border-radius: 4px;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar {
   width: 0; /* Remove scrollbar space */
   background: transparent; /* Optional: just make scrollbar invisible */
@@ -649,8 +662,3 @@ body {
   transition: right 0.5s;
 }
 /* sidebar */
-
-/* full sidebar for mobile */
-.full-sidebar-mobile {
-  bottom: -100px !important;
-}
