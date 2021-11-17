@@ -131,7 +131,7 @@ var searchOptions = {
       map.flyTo(data.position, 18);
     }
   },
-  requestDelay: 1000, // 延遲 100 毫秒再送出請求
+  requestDelay: 500, // 延遲 100 毫秒再送出請求
   placeholder: "今天要去哪兒？" // 預設顯示的字串
 };
 $("#searchTerm").easyAutocomplete(searchOptions); // 啟用 EasyAutocomplete 到 inpupbox 這個元件
