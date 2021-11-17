@@ -155,7 +155,8 @@ $("#searchTerm").easyAutocomplete(searchOptions); // 啟用 EasyAutocomplete 到
 var map = L.map("map", {
   center: [25.045, 121.516],
   zoom: 12,
-  zoomControl: false
+  zoomControl: false,
+  tap: false
 });
 
 // map.on('move', function (e) {
@@ -219,28 +220,32 @@ var markers = new L.MarkerClusterGroup().addTo(map).on("click", function (e) {
   // 這邊暴力解，直接card值綁到sidebar上，
   // 但是會出現連續點擊marker，值會出現之前marker上card的值，沒有同步
   // 所以延遲執行function，確保card內的值已經改變
-  setTimeout(renderSidebar, 300);
+  setTimeout(renderSidebar, 5000);
 });
 
+// markers.on("click", function (e) {
+//   this.openPopup();
+// });
+
 function renderSidebar() {
-  try {
-    document.getElementById("s-title").innerHTML =
-      document.getElementById("StationName").innerHTML;
-    document.getElementById("s-address").innerHTML =
-      document.getElementById("StationAddress").innerHTML;
-    document.getElementById("s-AvailableRentBikes").innerHTML =
-      document.getElementById("AvailableRentBikes").innerHTML;
-    document.getElementById("s-AvailableReturnBikes").innerHTML =
-      document.getElementById("AvailableReturnBikes").innerHTML;
-    getFoodData();
-    getTourismData();
-  } catch (e) {}
+  document.getElementById("s-title").innerHTML =
+    document.getElementById("StationName").innerHTML;
+  document.getElementById("s-address").innerHTML =
+    document.getElementById("StationAddress").innerHTML;
+  document.getElementById("s-AvailableRentBikes").innerHTML =
+    document.getElementById("AvailableRentBikes").innerHTML;
+  document.getElementById("s-AvailableReturnBikes").innerHTML =
+    document.getElementById("AvailableReturnBikes").innerHTML;
+  getFoodData();
+  getTourismData();
 }
 
 function setMarker(data, type) {
   if (type == "bike") {
     console.log("自行車marker渲染");
+
     data.forEach((item) => {
+      console.log(item);
       var StationName = item.StationName.Zh_tw.replace("YouBike", "")
         .replace("2.0_", "")
         .replace("1.0_", "");
@@ -260,14 +265,14 @@ function setMarker(data, type) {
           )
             .bindPopup(
               `<div id="card">
-                <div class="card-body">
-                <h1 class="card-title" id="StationName">${StationName}</h1>
-                <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.StationAddress.Zh_tw}</h6>
-                <p class="card-text mb-0">可租借車數：<span id="AvailableRentBikes">${item.AvailableRentBikes}</span></p>
-                <p class="card-text mt-0">可歸還車數：<span id="AvailableReturnBikes">${item.AvailableReturnBikes}</span></p>
-                <p class="card-text mt-0">更新時間：<span id="UpdateTime">${item.UpdateTime}</span></p>
-                </div>
-            </div>`,
+                  <div class="card-body">
+                  <h1 class="card-title" id="StationName">${StationName}</h1>
+                  <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.StationAddress.Zh_tw}</h6>
+                  <p class="card-text mb-0">可租借車數：<span id="AvailableRentBikes">${item.AvailableRentBikes}</span></p>
+                  <p class="card-text mt-0">可歸還車數：<span id="AvailableReturnBikes">${item.AvailableReturnBikes}</span></p>
+                  <p class="card-text mt-0">更新時間：<span id="UpdateTime">${item.UpdateTime}</span></p>
+                  </div>
+                </div>`,
               {
                 closeButton: false
               }
@@ -293,15 +298,15 @@ function setMarker(data, type) {
           )
             .bindPopup(
               `<div id="card" class="noBikePopUp">
-              抱歉！本站已無車輛租借
-                <div class="card-body" style="display:none;">
-                  <h1 class="card-title" id="StationName">${StationName}</h1>
-                  <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.StationAddress.Zh_tw}</h6>
-                  <p class="card-text mb-0">可租借車數：<span id="AvailableRentBikes">${item.AvailableRentBikes}</span></p>
-                  <p class="card-text mt-0">可歸還車數：<span id="AvailableReturnBikes">${item.AvailableReturnBikes}</span></p>
-                  <p class="card-text mt-0">更新時間：<span id="UpdateTime">${item.UpdateTime}</span></p>
-                </div>
-            </div>`,
+                抱歉！本站已無車輛租借
+                  <div class="card-body" style="display:none;">
+                    <h1 class="card-title" id="StationName">${StationName}</h1>
+                    <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.StationAddress.Zh_tw}</h6>
+                    <p class="card-text mb-0">可租借車數：<span id="AvailableRentBikes">${item.AvailableRentBikes}</span></p>
+                    <p class="card-text mt-0">可歸還車數：<span id="AvailableReturnBikes">${item.AvailableReturnBikes}</span></p>
+                    <p class="card-text mt-0">更新時間：<span id="UpdateTime">${item.UpdateTime}</span></p>
+                  </div>
+              </div>`,
               {
                 closeButton: false
               }
@@ -327,13 +332,13 @@ function setMarker(data, type) {
         })
           .bindPopup(
             `<div id="card">
-                <div class="card-body">
-                  <h1 class="card-title" id="StationName">${item.name}</h1>
-                  <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.add}</h6>
-                  <p class="card-text mt-0">${item.web}</p>
-                  <p class="card-text mt-0">${item.tel}</p>
-                </div>
-              </div>`,
+              <div class="card-body">
+                <h1 class="card-title" id="StationName">${item.name}</h1>
+                <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.add}</h6>
+                <p class="card-text mt-0">${item.web}</p>
+                <p class="card-text mt-0">${item.tel}</p>
+              </div>
+            </div>`,
             {
               closeButton: false
             }
@@ -359,12 +364,12 @@ function setMarker(data, type) {
         })
           .bindPopup(
             `<div id="card">
-              <div class="card-body">
-                <h1 class="card-title" id="StationName">${item.Name}</h1>
-                <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.WebsiteUrl}</h6>
-                <p class="card-text mb-0">${item.DescriptionDetail}</p>
-              </div>
-            </div>`,
+            <div class="card-body">
+              <h1 class="card-title" id="StationName">${item.Name}</h1>
+              <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.WebsiteUrl}</h6>
+              <p class="card-text mb-0">${item.DescriptionDetail}</p>
+            </div>
+          </div>`,
             {
               closeButton: false
             }
