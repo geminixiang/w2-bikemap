@@ -762,7 +762,7 @@ var gesture = {
     y: [],
     match: ""
   },
-  tolerance = 200; //手勢滑動寬容值;
+  tolerance = 250; //手勢滑動寬容值;
 
 window.addEventListener("touchstart", function (e) {
   e.preventDefault();
