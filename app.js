@@ -763,6 +763,7 @@ var gesture = {
     match: ""
   },
   tolerance = 200; //手勢滑動寬容值;
+
 window.addEventListener("touchstart", function (e) {
   e.preventDefault();
   for (i = 0; i < e.touches.length; i++) {
@@ -813,6 +814,8 @@ window.addEventListener("touchend", function (e) {
   gesture.match = xTravel = yTravel = "";
 });
 
-function test() {
-  map.removeLayer(myLayer);
+function removePath() {
+  if (myLayer) {
+    map.removeLayer(myLayer);
+  }
 }
