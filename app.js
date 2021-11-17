@@ -417,6 +417,8 @@ function showTourismData() {
   let random1 = Math.floor(Math.random() * tourism.length);
   let random2 = Math.floor(Math.random() * tourism.length);
   let random3 = Math.floor(Math.random() * tourism.length);
+  console.log("afdsfsadf");
+  console.log(tourism[random1]);
 
   document.getElementById("tourism").innerHTML = `
       <!--Pixabay 上的免費圖片-->
@@ -425,21 +427,21 @@ function showTourismData() {
           <h1>${tourism[random1].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${tourism[random1].DescriptionDetail}...查看更多</p>
+          <p>${tourism[random1].DescriptionDetail}</p>...查看更多
       </div>
       <div class="food-detail">
           <img src="./images/tour2.jpg" alt="" class="food-img">
           <h1>${tourism[random2].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${tourism[random2].DescriptionDetail}...查看更多</p>
+          <p>${tourism[random2].DescriptionDetail}</p>...查看更多
       </div>
       <div class="food-detail">
           <img src="./images/tour3.jpg" alt="" class="food-img">
           <h1>${tourism[random3].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${tourism[random3].DescriptionDetail}...查看更多</p>
+          <p>${tourism[random3].DescriptionDetail}</p>...查看更多
       </div>`;
 }
 
@@ -484,21 +486,21 @@ function showFoodData() {
           <h1>${foods[random1].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${foods[random1].web}...查看更多</p>
+          <p>${foods[random1].web}</p>...查看更多
       </div>
       <div class="food-detail">
           <img src="./images/food2.jpg" alt="" class="food-img">
           <h1>${foods[random2].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${foods[random2].web}...查看更多</p>
+          <p>${foods[random2].web}</p>...查看更多
       </div>
       <div class="food-detail">
           <img src="./images/food3.jpg" alt="" class="food-img">
           <h1>${foods[random3].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${foods[random3].web}...查看更多</p>
+          <p>${foods[random3].web}</p>...查看更多
       </div>`;
 }
 
@@ -581,7 +583,7 @@ function getRoutesData() {
       });
       console.log(filter);
 
-      let str = "";
+      let str = `<option value=選擇路線>選擇路線</option>`;
       filter.forEach((item) => {
         str += `<option value="${item.RouteName}">${item.RouteName}</option>`;
       });
@@ -767,7 +769,7 @@ var gesture = {
     y: [],
     match: ""
   },
-  tolerance = 250; //手勢滑動寬容值;
+  tolerance = 200; //手勢滑動寬容值;
 
 window.addEventListener("touchstart", function (e) {
   e.preventDefault();

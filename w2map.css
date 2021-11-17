@@ -270,7 +270,7 @@ body {
 
 /* full sidebar for mobile */
 .full-sidebar-mobile {
-  bottom: -100px !important;
+  bottom: -0px !important;
 }
 
 /*  */
@@ -343,7 +343,7 @@ body {
 }
 .food-img {
   width: 130px;
-  height: 100px;
+  height: 120px;
   background-position: center center;
   background-repeat: no-repeat;
   float: left;
@@ -356,7 +356,7 @@ body {
 }
 .food-detail > h1,
 .food-detail > p {
-  margin: 0px;
+  margin: 0;
   /* 行數限制 */
   overflow: hidden;
   white-space: nowrap;
@@ -365,6 +365,13 @@ body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   white-space: normal;
+}
+.food-detail > h1 {
+  font-weight: 800;
+}
+.food-detail > p {
+  margin: 8px 0px 0px 0px;
+  font-size: 13px;
 }
 .food-detail > span {
   color: rgba(255, 203, 51, 1);
@@ -485,18 +492,20 @@ body {
   cursor: pointer;
   background: white;
   color: black;
-  font-size: 20px;
+  font-size: 16px;
   opacity: 0.5;
+  letter-spacing: 2px;
 }
 .tab_content {
   order: 1;
   display: none;
   width: 100%;
   border-bottom: 3px solid #ddd;
-  line-height: 1.6;
-  font-size: 0.9em;
+  line-height: 1.4;
+  font-size: 10px;
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
+  box-shadow: 0px -6px 8px rgba(0, 0, 0, 0.1);
 }
 .tab_css label:hover {
   opacity: 1;
@@ -505,7 +514,7 @@ body {
 .tab_css input:checked + label {
   opacity: 1;
   font-weight: bold;
-  border-bottom: 8px solid #ffcb33;
+  border-bottom: 4px solid #ffcb33;
 }
 .tab_css input:checked + label + .tab_content {
   display: initial;
@@ -537,7 +546,7 @@ body {
   .leaflet-sidebar > .leaflet-control {
     box-shadow: none;
     -webkit-border-radius: 0;
-    border-radius: 30px;
+    border-radius: 30px 30px 0px 0px;
     box-shadow: 0px -6px 8px rgba(0, 0, 0, 0.1);
   }
   .leaflet-touch .leaflet-sidebar > .leaflet-control {
