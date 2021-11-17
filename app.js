@@ -223,16 +223,18 @@ var markers = new L.MarkerClusterGroup().addTo(map).on("click", function (e) {
 });
 
 function renderSidebar() {
-  document.getElementById("s-title").innerHTML =
-    document.getElementById("StationName").innerHTML;
-  document.getElementById("s-address").innerHTML =
-    document.getElementById("StationAddress").innerHTML;
-  document.getElementById("s-AvailableRentBikes").innerHTML =
-    document.getElementById("AvailableRentBikes").innerHTML;
-  document.getElementById("s-AvailableReturnBikes").innerHTML =
-    document.getElementById("AvailableReturnBikes").innerHTML;
-  getFoodData();
-  getTourismData();
+  try {
+    document.getElementById("s-title").innerHTML =
+      document.getElementById("StationName").innerHTML;
+    document.getElementById("s-address").innerHTML =
+      document.getElementById("StationAddress").innerHTML;
+    document.getElementById("s-AvailableRentBikes").innerHTML =
+      document.getElementById("AvailableRentBikes").innerHTML;
+    document.getElementById("s-AvailableReturnBikes").innerHTML =
+      document.getElementById("AvailableReturnBikes").innerHTML;
+    getFoodData();
+    getTourismData();
+  } catch (e) {}
 }
 
 function setMarker(data, type) {
@@ -317,15 +319,20 @@ function setMarker(data, type) {
 
     data.forEach((item) => {
       mask = foodIcon;
-      // console.log(item.lat, item.lng);
+      // console.log(item);
       markers.addLayer(
         L.marker([item.lat, item.lng], {
           icon: mask,
           title: item.name
         })
           .bindPopup(
-            `<div id="card">${item.name}
-
+            `<div id="card">
+                <div class="card-body">
+                  <h1 class="card-title" id="StationName">${item.name}</h1>
+                  <h6 class="card-subtitle mb-2 text-muted" id="StationAddress">${item.add}</h6>
+                  <p class="card-text mt-0">${item.web}</p>
+                  <p class="card-text mt-0">${item.tel}</p>
+                </div>
               </div>`,
             {
               closeButton: false
@@ -343,8 +350,8 @@ function setMarker(data, type) {
 
     data.forEach((item) => {
       mask = tourIcon;
-      console.log(item);
-      console.log(item.Position.PositionLat, item.Position.PositionLon);
+      // console.log(item);
+      // console.log(item.Position.PositionLat, item.Position.PositionLon);
       markers.addLayer(
         L.marker([item.Position.PositionLat, item.Position.PositionLon], {
           icon: mask,
