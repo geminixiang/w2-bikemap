@@ -366,6 +366,7 @@ body {
 }
 .showSlide img {
   width: 100%;
+  height: 350px;
   max-height: 350px;
 }
 .slidercontainer {
@@ -648,3 +649,8 @@ body {
   transition: right 0.5s;
 }
 /* sidebar */
+
+/* full sidebar for mobile */
+.full-sidebar-mobile {
+  bottom: -100px !important;
+}

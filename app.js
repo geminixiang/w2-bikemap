@@ -309,8 +309,6 @@ function getTourismData(longitude, latitude) {
       let random2 = Math.floor(Math.random() * tourism.length);
       let random3 = Math.floor(Math.random() * tourism.length);
 
-      console.log;
-
       document.getElementById("tourism").innerHTML = `
       <!--Pixabay 上的免費圖片-->
       <div class="food-detail">
@@ -662,10 +660,16 @@ window.addEventListener("touchend", function (e) {
     yTravel = gesture.y[gesture.y.length - 1] - gesture.y[0];
   if (xTravel < tolerance && xTravel > -tolerance && yTravel < -tolerance) {
     gesture.match = "Swiped Up";
+    // 上滑 full sidebar for mobile
+    var element = document.getElementsByClassName("leaflet-sidebar")[0];
+    element.classList.add("full-sidebar-mobile");
   }
   if (xTravel < tolerance && xTravel > -tolerance && yTravel > tolerance) {
     gesture.match = "Swiped Down";
-    sidebar.hide(); //下滑就隱藏sidebar
+    //下滑就隱藏sidebar
+    var element = document.getElementsByClassName("leaflet-sidebar")[0];
+    element.classList.remove("full-sidebar-mobile");
+    sidebar.hide();
   }
   if (yTravel < tolerance && yTravel > -tolerance && xTravel < -tolerance) {
     gesture.match = "Swiped Left";
