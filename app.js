@@ -444,8 +444,14 @@ function getRoutesData() {
       console.log("自行車的路線", response);
       const routeData = response.data;
 
+      // console.log(routeData);
+      var filter = routeData.filter((item) => {
+        return item.RouteName.includes("河濱");
+      });
+      console.log(filter);
+
       let str = "";
-      routeData.forEach((item) => {
+      filter.forEach((item) => {
         str += `<option value="${item.RouteName}">${item.RouteName}</option>`;
       });
       bikeRoute.innerHTML = str;
@@ -455,15 +461,12 @@ function getRoutesData() {
         // console.log(value)
 
         if (myLayer) {
-          // console.log(myLayer);
           map.removeLayer(myLayer);
         }
 
-        routeData.forEach((item) => {
-          // console.log(item)
+        filter.forEach((item) => {
           if (item.RouteName === value) {
             geo = item.Geometry;
-            // console.log(geo)
 
             // 畫線的方法
             polyLine(geo);
@@ -492,9 +495,10 @@ function polyLine(geo) {
     opacity: 0.65,
     dashArray: "10, 15" // 路線點點style https://developer.mozilla.org/zh-TW/docs/Web/SVG/Tutorial/Fills_and_Strokes
   };
-  const myLayer = L.geoJSON(geojsonFeature, {
+  myLayer = L.geoJSON(geojsonFeature, {
     style: myStyle
   }).addTo(map);
+  // console.log(myLayer);
 
   myLayer.addData(geojsonFeature);
   // zoom the map to the layer
@@ -682,3 +686,7 @@ window.addEventListener("touchend", function (e) {
   gesture.y = [];
   gesture.match = xTravel = yTravel = "";
 });
+
+function test() {
+  map.removeLayer(myLayer);
+}

@@ -260,6 +260,7 @@ body {
   bottom: -300px;
 }
 .loading {
+  /* 圖片水平置中 */
   display: block;
   margin-left: auto;
   margin-right: auto;
