@@ -86,7 +86,8 @@ body {
 }
 
 /* 自行車路線按鈕 */
-.bikerRoute {
+.bikerRoute,
+#bikeRoute {
   border-radius: 5px;
   padding: 13px 13px;
   background-color: rgba(31, 46, 61, 1);
