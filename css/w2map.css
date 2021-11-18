@@ -68,7 +68,8 @@ body {
 
 #searchTerm:focus {
   color: #000;
-  border: 3px solid rgba(0, 0, 0, 1);
+  border: 2px solid rgb(31, 46, 6);
+  border-right: none;
 }
 
 .searchButton {
@@ -91,11 +92,15 @@ body {
   border-radius: 5px;
   padding: 13px 13px;
   background-color: rgba(31, 46, 61, 1);
+  font-size: 12px;
   font-weight: 700;
   color: white !important;
   cursor: pointer;
   border: 0px;
   white-space: nowrap;
+  /* 強制下拉+按鈕高度一致，位置高度一樣 */
+  height: 45px;
+  vertical-align: middle;
 }
 
 .bikerRoute:hover > i,
@@ -110,7 +115,6 @@ body {
   font-size: 15px;
 }
 .bikerRoute > p {
-  font-size: 12px;
   margin-left: 5px;
   vertical-align: middle;
   display: inline;
@@ -119,6 +123,31 @@ body {
 .bikerRecommed {
   position: absolute;
   right: 5vw;
+}
+
+/* 下拉選單 */
+#bikeRoute {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  padding-right: 30px;
+  /* Personalize */
+  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg)
+      no-repeat right 0.8em center/1.4em,
+    rgb(31, 46, 61) 3em;
+}
+select option {
+  color: inherit;
+  background-color: rgba(31, 46, 61, 1);
+  line-height: 25px;
+  font-size: 15px;
+}
+select:focus {
+  outline: none;
+}
+select::-ms-expand {
+  display: none;
 }
 
 /* 改變定位圖案 */
@@ -131,15 +160,31 @@ body {
   display: none;
 }
 
-/* easy autocomplete 顯示問題 */
+/* easy autocomplete 顯示 */
 .easy-autocomplete-container {
   z-index: 999;
+  left: 2%;
+  width: 98%;
 }
 .easy-autocomplete {
   max-width: 480px !important;
   width: 35vw !important;
 }
-
+.easy-autocomplete-container ul,
+.easy-autocomplete-container ul li {
+  border: 0;
+}
+.easy-autocomplete-container ul {
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.easy-autocomplete-container li {
+  background: none !important;
+  padding-bottom: 10px !important;
+}
+.eac-item {
+  font-size: 16px;
+}
 /* Marker Cluster */
 /* medium: rgba(241, 211, 87, 0.6)*/
 /* medium: rgba(240, 194, 12, 0.6) */
@@ -406,16 +451,16 @@ body {
   color: white !important;
   font-weight: bold;
   font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
+  transition: 0.3s ease;
+  border-radius: 0 10px 10px 0;
 }
 .arrowright {
   right: 0;
-  border-radius: 3px 0 0 3px;
+  border-radius: 10px 0 0 10px;
 }
 .arrowleft:hover,
 .arrowright:hover {
-  background-color: rgba(115, 115, 115, 0.8);
+  background-color: rgba(255, 199, 0, 0.4);
 }
 .content {
   color: #eff5d4;
@@ -432,9 +477,9 @@ body {
 /* Fading animation */
 .fade {
   -webkit-animation-name: fade;
-  -webkit-animation-duration: 1.5s;
+  -webkit-animation-duration: 2s;
   animation-name: fade;
-  animation-duration: 1.5s;
+  animation-duration: 2s;
 }
 @-webkit-keyframes fade {
   from {
@@ -563,10 +608,14 @@ body {
   #searchTerm,
   .easy-autocomplete {
     width: 70vw !important;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+  }
+  #searchTerm,
+  .searchButton {
+    box-shadow: 0px 12px 16px rgba(0, 0, 0, 0.25);
   }
   .logo {
     width: 130px;
+    left: 2vw;
   }
   .showSlide img {
     max-height: 150px;

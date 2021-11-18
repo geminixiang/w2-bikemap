@@ -40,6 +40,14 @@ var tourIcon = new L.Icon({
   shadowSize: [41, 41]
 });
 
+// 地圖宣告
+var map = L.map("map", {
+  center: [25.045, 121.516],
+  zoom: 12,
+  zoomControl: false,
+  tap: false
+});
+
 // 地圖API設定
 function GetAuthorizationHeader() {
   let AppID = "69121a1d8f714a5faa4f54c512bb459e";
@@ -90,13 +98,6 @@ var searchOptions = {
 };
 $("#searchTerm").easyAutocomplete(searchOptions); // 啟用 EasyAutocomplete 到 inpupbox 這個元件
 
-var map = L.map("map", {
-  center: [25.045, 121.516],
-  zoom: 12,
-  zoomControl: false,
-  tap: false
-});
-
 // 圖層 1
 // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
 //     attribution: '&copy; <a href="https://2021.thef2e.com/works">我們就是要組隊</a> contributors',
@@ -125,8 +126,6 @@ if (navigator.geolocation) {
     function (position) {
       const longitude = position.coords.longitude; // 經度
       const latitude = position.coords.latitude; // 緯度
-      // console.log(longitude)
-      // console.log(latitude)
 
       // 重新設定 view 的位置
       map.setView([latitude, longitude], 13);
@@ -153,10 +152,6 @@ var markers = new L.MarkerClusterGroup().addTo(map).on("click", function (e) {
   // 所以延遲執行function，確保card內的值已經改變
   setTimeout(renderSidebar, 500);
 });
-
-// markers.on("click", function (e) {
-//   this.openPopup();
-// });
 
 function renderSidebar() {
   try {
@@ -354,21 +349,21 @@ function showTourismData() {
   document.getElementById("tourism").innerHTML = `
       <!--Pixabay 上的免費圖片-->
       <div class="food-detail">
-          <img src="./images/tour1.jpg" alt="" class="food-img">
+          <img src="./images/tour1.webp" alt="" class="food-img">
           <h1>${tourism[random1].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
           <p>${tourism[random1].DescriptionDetail}</p>
       </div>
       <div class="food-detail">
-          <img src="./images/tour2.jpg" alt="" class="food-img">
+          <img src="./images/tour2.webp" alt="" class="food-img">
           <h1>${tourism[random2].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
           <p>${tourism[random2].DescriptionDetail}</p>
       </div>
       <div class="food-detail">
-          <img src="./images/tour3.jpg" alt="" class="food-img">
+          <img src="./images/tour3.webp" alt="" class="food-img">
           <h1>${tourism[random3].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
@@ -413,21 +408,21 @@ function showFoodData() {
   document.getElementById("restaurant").innerHTML = `
       <!--Pixabay 上的免費圖片-->
       <div class="food-detail">
-          <img src="./images/food1.jpg" alt="" class="food-img">
+          <img src="./images/food1.webp" alt="" class="food-img">
           <h1>${foods[random1].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
           <p>${foods[random1].web}</p>
       </div>
       <div class="food-detail">
-          <img src="./images/food2.jpg" alt="" class="food-img">
+          <img src="./images/food2.webp" alt="" class="food-img">
           <h1>${foods[random2].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
           <p>${foods[random2].web}</p>
       </div>
       <div class="food-detail">
-          <img src="./images/food3.jpg" alt="" class="food-img">
+          <img src="./images/food3.webp" alt="" class="food-img">
           <h1>${foods[random3].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
