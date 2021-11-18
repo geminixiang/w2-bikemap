@@ -152,7 +152,7 @@ select::-ms-expand {
 
 /* 改變定位圖案 */
 .leaflet-bar-part {
-  background-image: url("/icons/location.svg");
+  background-image: url("../icons/location.svg");
   background-repeat: no-repeat;
   background-size: auto;
 }
