@@ -1,4 +1,4 @@
-/* 用這辦法處理手機網址列 */
+/* 用這辦法處理手機網址列影響height */
 /* https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
 let vh = window.innerHeight * 0.01;
@@ -6,14 +6,9 @@ let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 var usrLocation = [];
-var geoOptions = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-};
 
 var greenIcon = new L.Icon({
-  iconUrl: "./bikePosition-green.svg",
+  iconUrl: "./icons/bikePosition-green.svg",
   shadowUrl: "",
   iconSize: [62, 75],
   iconAnchor: [12, 41],
@@ -21,7 +16,7 @@ var greenIcon = new L.Icon({
   shadowSize: [41, 41]
 });
 var grayIcon = new L.Icon({
-  iconUrl: "./bikePosition-gray.svg",
+  iconUrl: "./icons/bikePosition-gray.svg",
   shadowUrl: "",
   iconSize: [62, 75],
   iconAnchor: [12, 41],
@@ -45,19 +40,6 @@ var tourIcon = new L.Icon({
   shadowSize: [41, 41]
 });
 
-function success(pos) {
-  var crd = pos.coords;
-  usrLocation = [crd.latitude, crd.longitude];
-  console.log(usrLocation);
-  // renderMap(usrLocation);
-}
-
-function error(err) {
-  console.warn("ERROR(" + err.code + "): " + err.message);
-}
-
-navigator.geolocation.getCurrentPosition(success, error, geoOptions);
-
 // 地圖API設定
 function GetAuthorizationHeader() {
   let AppID = "69121a1d8f714a5faa4f54c512bb459e";
@@ -76,50 +58,6 @@ function GetAuthorizationHeader() {
     '"';
   return { Authorization: Authorization, "X-Date": GMTString };
 }
-
-function readTextFile(file, callback) {
-  var rawFile = new XMLHttpRequest();
-  rawFile.overrideMimeType("application/json");
-  rawFile.open("GET", file, true);
-  rawFile.onreadystatechange = function () {
-    if (rawFile.readyState === 4 && rawFile.status == "200") {
-      callback(rawFile.responseText);
-    }
-  };
-  rawFile.send(null);
-}
-
-// 想佔存車站資料，尚未使用
-// https://stackoverflow.com/questions/34951170/save-json-to-chrome-storage-local-storage
-// var local = (function () {
-//   var setData = function (key, obj) {
-//     var values = JSON.stringify(obj);
-//     localStorage.setItem(key, values);
-//   };
-
-//   var getData = function (key) {
-//     if (localStorage.getItem(key) != null) {
-//       return JSON.parse(localStorage.getItem(key));
-//     } else {
-//       return false;
-//     }
-//   };
-
-//   var updateDate = function (key, newData) {
-//     if (localStorage.getItem(key) != null) {
-//       var oldData = JSON.parse(localStorage.getItem(key));
-//       for (keyObj in newData) {
-//         oldData[keyObj] = newData[keyObj];
-//       }
-//       var values = JSON.stringify(oldData);
-//       localStorage.setItem(key, values);
-//     } else {
-//       return false;
-//     }
-//   };
-
-//   return { set: setData, get: getData, update: updateDate };
-// })();
 
 // 搜尋API設定
 var searchOptions = {
@@ -158,13 +96,6 @@ var map = L.map("map", {
   zoomControl: false,
   tap: false
 });
-
-// map.on('move', function (e) {
-//     console.log(map.getCenter());
-//     var lng = map.getCenter().lng;
-//     var lat = map.getCenter().lat;
-//     getStationData(lng, lat);
-// })
 
 // 圖層 1
 // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -216,11 +147,11 @@ if (navigator.geolocation) {
 var markers = new L.MarkerClusterGroup().addTo(map).on("click", function (e) {
   sidebar.show();
 
-  console.log(e);
+  // console.log(e);
   // 這邊暴力解，直接card值綁到sidebar上，
   // 但是會出現連續點擊marker，值會出現之前marker上card的值，沒有同步
   // 所以延遲執行function，確保card內的值已經改變
-  setTimeout(renderSidebar, 5000);
+  setTimeout(renderSidebar, 500);
 });
 
 // markers.on("click", function (e) {
@@ -228,14 +159,16 @@ var markers = new L.MarkerClusterGroup().addTo(map).on("click", function (e) {
 // });
 
 function renderSidebar() {
-  document.getElementById("s-title").innerHTML =
-    document.getElementById("StationName").innerHTML;
-  document.getElementById("s-address").innerHTML =
-    document.getElementById("StationAddress").innerHTML;
-  document.getElementById("s-AvailableRentBikes").innerHTML =
-    document.getElementById("AvailableRentBikes").innerHTML;
-  document.getElementById("s-AvailableReturnBikes").innerHTML =
-    document.getElementById("AvailableReturnBikes").innerHTML;
+  try {
+    document.getElementById("s-title").innerHTML =
+      document.getElementById("StationName").innerHTML;
+    document.getElementById("s-address").innerHTML =
+      document.getElementById("StationAddress").innerHTML;
+    document.getElementById("s-AvailableRentBikes").innerHTML =
+      document.getElementById("AvailableRentBikes").innerHTML;
+    document.getElementById("s-AvailableReturnBikes").innerHTML =
+      document.getElementById("AvailableReturnBikes").innerHTML;
+  } catch {}
   getFoodData();
   getTourismData();
 }
@@ -245,7 +178,7 @@ function setMarker(data, type) {
     console.log("自行車marker渲染");
 
     data.forEach((item) => {
-      console.log(item);
+      // console.log(item);
       var StationName = item.StationName.Zh_tw.replace("YouBike", "")
         .replace("2.0_", "")
         .replace("1.0_", "");
@@ -401,7 +334,7 @@ function getTourismData(longitude, latitude) {
       headers: GetAuthorizationHeader()
     })
       .then((response) => {
-        console.log("景點資料", response);
+        // console.log("景點資料", response);
         tourism = response.data;
         showTourismData();
         setMarker(tourism, "tourism");
@@ -417,8 +350,6 @@ function showTourismData() {
   let random1 = Math.floor(Math.random() * tourism.length);
   let random2 = Math.floor(Math.random() * tourism.length);
   let random3 = Math.floor(Math.random() * tourism.length);
-  console.log("afdsfsadf");
-  console.log(tourism[random1]);
 
   document.getElementById("tourism").innerHTML = `
       <!--Pixabay 上的免費圖片-->
@@ -427,21 +358,21 @@ function showTourismData() {
           <h1>${tourism[random1].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${tourism[random1].DescriptionDetail}</p>...查看更多
+          <p>${tourism[random1].DescriptionDetail}</p>
       </div>
       <div class="food-detail">
           <img src="./images/tour2.jpg" alt="" class="food-img">
           <h1>${tourism[random2].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${tourism[random2].DescriptionDetail}</p>...查看更多
+          <p>${tourism[random2].DescriptionDetail}</p>
       </div>
       <div class="food-detail">
           <img src="./images/tour3.jpg" alt="" class="food-img">
           <h1>${tourism[random3].Name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${tourism[random3].DescriptionDetail}</p>...查看更多
+          <p>${tourism[random3].DescriptionDetail}</p>
       </div>`;
 }
 
@@ -449,10 +380,10 @@ function showTourismData() {
 let foods = [];
 function getFoodData(longitude, latitude) {
   if (foods.length > 0) {
-    console.log("已有餐廳資料");
+    // console.log("已有餐廳資料");
     showFoodData();
   } else {
-    console.log("取得餐廳API資料");
+    // console.log("取得餐廳API資料");
 
     axios({
       method: "get",
@@ -463,8 +394,8 @@ function getFoodData(longitude, latitude) {
       // headers: GetAuthorizationHeader()
     })
       .then((response) => {
-        console.log(response);
-        console.log("美食資料", response.data);
+        // console.log(response);
+        // console.log("美食資料", response.data);
         foods = response.data;
         showFoodData();
         // getAvailableData(longitude, latitude);
@@ -486,21 +417,21 @@ function showFoodData() {
           <h1>${foods[random1].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${foods[random1].web}</p>...查看更多
+          <p>${foods[random1].web}</p>
       </div>
       <div class="food-detail">
           <img src="./images/food2.jpg" alt="" class="food-img">
           <h1>${foods[random2].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${foods[random2].web}</p>...查看更多
+          <p>${foods[random2].web}</p>
       </div>
       <div class="food-detail">
           <img src="./images/food3.jpg" alt="" class="food-img">
           <h1>${foods[random3].name}</h1>
           <p style="display: inline;">4.0</p><span>★★★★☆</span>
           <p style="display: inline;">120則評論</p>
-          <p>${foods[random3].web}</p>...查看更多
+          <p>${foods[random3].web}</p>
       </div>`;
 }
 
@@ -514,7 +445,7 @@ function getStationData(longitude, latitude) {
     headers: GetAuthorizationHeader()
   })
     .then((response) => {
-      console.log("租借站位資料", response);
+      // console.log("租借站位資料", response);
       data = response.data;
 
       getAvailableData(longitude, latitude);
@@ -531,7 +462,7 @@ function getAvailableData(longitude, latitude) {
     headers: GetAuthorizationHeader()
   })
     .then((response) => {
-      console.log("車位資料", response);
+      // console.log("車位資料", response);
       const availableData = response.data;
 
       // 比對
@@ -561,7 +492,7 @@ function getRoutesData() {
     headers: GetAuthorizationHeader()
   })
     .then((response) => {
-      console.log("自行車的路線", response);
+      // console.log("自行車的路線", response);
       const routeData = response.data;
 
       // console.log(routeData);
@@ -581,7 +512,7 @@ function getRoutesData() {
         }
         return false;
       });
-      console.log(filter);
+      // console.log(filter);
 
       let str = `<option value=選擇路線>選擇路線</option>`;
       filter.forEach((item) => {
@@ -651,16 +582,35 @@ L.control
   .addTo(map);
 
 // side bar設定
-console.log(window.screen.width);
-if (window.screen.width > 767) {
+// 起始畫面設定
+var device = "";
+if (window.innerWidth > 767) {
   var sidebar = L.control.sidebar("sidebar", {
     position: "left"
   });
+  device = "pc";
 } else {
   var sidebar = L.control.sidebar("sidebar", {
     position: "bottom"
   });
+  device = "mobile";
 }
+
+// 畫面尺寸變動監聽
+window.addEventListener("resize", function (e) {
+  var checkDevice = "";
+  if (window.innerWidth > 767) {
+    checkDevice = "pc";
+  } else {
+    checkDevice = "mobile";
+  }
+
+  // console.log(window.innerWidth, device, checkDevice, device == checkDevice);
+
+  if (device != checkDevice) {
+    window.location.reload();
+  }
+});
 
 map.addControl(sidebar);
 
@@ -687,56 +637,6 @@ sidebar.on("hidden", function () {
 L.DomEvent.on(sidebar.getCloseButton(), "click", function () {
   console.log("Close button clicked.");
 });
-
-// function renderMap(usrLocation) {
-
-//     var markers = new L.MarkerClusterGroup().addTo(map).on('click', function () {
-//         sidebar.toggle();
-//     });
-// 這個API是真的好用
-//     var hh = `https://apis.youbike.com.tw/api/front/station/all?lang=tw&type=1&_=${Date.now()}`;
-
-//     axios.get(hh)
-//         .then(function (response) {
-//             let data = response.data.retVal;
-
-//             for (let i = 0; data.length > i; i++) {
-//                 var mask;
-//                 if (data[i].status == 1 && data[i].name_tw) {
-//                     // 大於5台，綠標，反之，黃標
-//                     (data[i].available_spaces > 5) ? mask = greenIcon : mask = yellowIcon
-//                 } else {
-//                     mask = redIcon;
-//                 }
-
-//                 // uid = data[i].StationUID;
-//                 // console.log(uid);
-//                 // console.log(data[i]);
-
-//                 markers.addLayer(L.marker([data[i].lat, data[i].lng], { icon: mask })
-//                     .bindPopup('<h1>' + data[i].name_tw + '</h1>'
-//                         + '<p>' + data[i].available_spaces
-//                         + '/' + data[i].parking_spaces + '</p>'
-//                         + '<p>更新於' + data[i].updated_at + '</p>'
-//                     )
-//                     .bindTooltip(data[i].name_tw,
-//                         {
-//                             permanent: true,
-//                             direction: 'center',
-//                             className: 'mytooltip'
-//                         }
-//                     )
-//                 );
-//                 // console.log(sidebar.getContainer());
-//             }
-//             map.addLayer(markers);
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         })
-//         .finally(function () {
-//         });
-// }
 
 // image slider.js
 
@@ -826,3 +726,8 @@ function removePath() {
     map.removeLayer(myLayer);
   }
 }
+
+window.onload = function () {
+  getFoodData();
+  getTourismData();
+};
