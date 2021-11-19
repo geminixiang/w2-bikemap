@@ -110,7 +110,7 @@ L.tileLayer(
   "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
   {
     attribution:
-      '&copy; <a href="https://2021.thef2e.com/works">我們就是要組隊</a> contributors',
+      '&copy; <a href="https://2021.thef2e.com/users/6296432819610584370?week=2&type=3">我們就是要組隊</a> contributors',
     maxZoom: 18,
     id: "mapbox/streets-v11",
     tileSize: 512,
