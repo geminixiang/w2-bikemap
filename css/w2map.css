@@ -142,9 +142,7 @@ body {
   outline: 0;
   padding-right: 30px;
   /* Personalize */
-  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg)
-      no-repeat right 0.8em center/1.4em,
-    rgb(31, 46, 61) 3em;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/1.4em, rgb(31, 46, 61) 3em;
 }
 select option {
   color: inherit;
@@ -269,12 +267,9 @@ select::-ms-expand {
 
 .leaflet-cluster-spider-leg {
   /* stroke-dashoffset (duration and function) should match with leaflet-marker-icon transform in order to track it exactly */
-  -webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out,
-    -webkit-stroke-opacity 0.3s ease-in;
-  -moz-transition: -moz-stroke-dashoffset 0.3s ease-out,
-    -moz-stroke-opacity 0.3s ease-in;
-  -o-transition: -o-stroke-dashoffset 0.3s ease-out,
-    -o-stroke-opacity 0.3s ease-in;
+  -webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;
+  -moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;
+  -o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
   transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
 }
 
@@ -625,6 +620,7 @@ select::-ms-expand {
   .logo {
     width: 130px;
     left: 2vw;
+    top: 10px;
   }
   .showSlide img {
     max-height: 150px;
